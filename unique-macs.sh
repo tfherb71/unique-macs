@@ -56,4 +56,13 @@ findman-macs() {
     done
 }
 findman-macs
-echo "Last octet of two new macs are ${mmacs[@]}"
+
+base_interface="WAN"
+base_mac=$(cat /sys/class/net/${base_interface}/address)
+
+for i in $(seq 1 2); do
+  loctet=${mmacs[$[$i-1]]}
+  mac=$(printf ${base_mac} | cut -d ":" -f -5)
+  macp="${mac}:${mmacs[$[$i-1]]}"
+  echo "New mac $i is ${macp}"
+done
